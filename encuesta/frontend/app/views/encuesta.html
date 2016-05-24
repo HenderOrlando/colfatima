@@ -1,0 +1,85 @@
+<md-toolbar class="md-accent md-hue-1">
+  <div class="md-toobar-tools" layout="row" layout-align="center end">
+    <div
+      flex="40"
+      flex-gt-sm="60"
+      layout-align="center center"
+      class="md-headline"
+    >
+    <span layout-margin layout-padding>
+      {{ encuesta.area.nombre }} - {{ encuesta.docente.nombre }}
+    </span>
+    </div>
+    <div
+      flex
+      style="text-align: center"
+      layout-align="center center"
+      layout="column"
+      ng-repeat="opt in encuesta.preguntas[0].opciones"
+    >
+      <span aria-label="opt.enunciado">
+        {{ ::opt.enunciado }}
+      </span>
+    </div>
+  </div>
+</md-toolbar>
+<md-content
+  layout="column"
+>
+  <div
+    layout="column"
+    style="padding: 4px 15px;"
+    ng-repeat="pregunta in encuesta.preguntas"
+    class="md-whiteframe-1dp"
+  >
+    <div ng-if="!pregunta.hasRecursos" layout="row">
+      <p
+        flex="40"
+        flex-gt-sm="60"
+      >
+        {{ ::(($index + 1) + '. ' + pregunta.enunciado) }}
+      </p>
+      <div
+        flex
+        ng-repeat="opt in pregunta.opciones"
+        layout="row"
+        layout="wrap"
+        ng-if="!pregunta.hasRecursos"
+      >
+        <md-button
+          class="md-raised"
+          ng-class="{'md-primary': encuesta.rtaSelected(pregunta, opt)}"
+          aria-label="{{ ::opt.enunciado }}"
+          ng-click="encuesta.saveRespuesta(pregunta, opt)"
+        ></md-button>
+      </div>
+    </div>
+    <p ng-if="pregunta.hasRecursos">
+      {{ ::(($index + 1) + '. ' + pregunta.enunciado) }}
+    </p>
+    <div>
+      <md-button
+        class="md-raised"
+        ng-class="{'md-primary': encuesta.rtaSelected(pregunta, recurso)}"
+        aria-label="{{ recurso.nombre || 'recurso' }}"
+        ng-click="encuesta.saveRespuesta(pregunta, recurso)"
+        ng-repeat="recurso in encuesta.recursos | filter:encuesta.filterRecurso"
+        ng-if="pregunta.hasRecursos"
+      >
+        {{ recurso.nombre }}
+      </md-button>
+      <form ng-submit="encuesta.createRecurso(pregunta)" layout="row">
+        <md-input-container ng-if="pregunta.hasRecursos" flex>
+          <label>Otros, Cuales</label>
+          <input flex ng-model="encuesta.otrorecurso" />
+        </md-input-container>
+        <md-button class="md-primary" ui-sref="index" layout="column" layout-align="center center">
+          Agregar
+        </md-button>
+      </form>
+    </div>
+  </div>
+  <md-button class="md-warn md-raised" ui-sref="index" layout="column">
+    Terminar
+  </md-button>
+</md-content>

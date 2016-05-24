@@ -1,0 +1,94 @@
+
+<div layout-fill>
+  <form
+    ng-repeat="item in adminform.list"
+    ng-submit="adminform.save(item, $index)"
+    ng-init="indexItem = $index"
+  >
+    <md-toolbar class="md-accent md-hue-1">
+      <div class="md-toolbar-tools">
+        <md-button type="submit">
+          Guardar
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-content layout="column" flex>
+      <div
+        ng-repeat="(name, attr) in adminform.attrs"
+        layout="row"
+        flex="100"
+        flex-gt-xs="50"
+      >
+        <md-input-container ng-if="!attr.enum && !attr.model && !attr.collection" flex>
+          <label>{{ ::name }}</label>
+          <input
+            ng-if="attr.type === 'string' || attr.type === 'int' || attr.type === 'integer' || attr.type === 'float' || attr.type === 'number'"
+            type="text"
+            ng-model="item[name]"
+            md-autofocus
+          />
+          <!--<input
+            ng-if="attr.type === 'string' || attr.type === 'int' || attr.type === 'integer' || attr.type === 'float' || attr.type === 'number'"
+            type="{{ ::(attr.type === 'string'?'text':'number') }}"
+            ng-model="item[name]"
+            md-autofocus="indexItem == 0 || indexItem == 1"
+          />-->
+          <textarea
+            ng-if="attr.type === 'text'"
+            ng-model="item[name]"
+            md-autofocus
+          ></textarea>
+        </md-input-container>
+        <div ng-if="attr.enum || attr.model" flex>
+          <md-autocomplete
+            md-selected-item="item[name]"
+            md-search-text-change="adminform.searchTextChange()"
+            md-search-text="adminform.searchText[indexItem]"
+            md-selected-item-change="adminform.selectedItemChange(item)"
+            md-items="subitem in adminform.querySearch(attr, null, indexItem )"
+            md-item-text="subitem.nombre || subitem.titulo || subitem.enunciado  || subitem"
+            md-min-length="0"
+            placeholder="{{ ::name }}">
+            <md-item-template>
+              <span md-highlight-text="adminform.searchText[indexItem]" md-highlight-flags="^i">
+                {{ subitem.nombre || subitem.titulo || subitem.enunciado  || subitem }}
+              </span>
+            </md-item-template>
+            <md-not-found>
+              La búsqueda "{{ adminform.searchText[indexItem] }}" no tiene resultados.
+              <md-button
+                ng-click="adminform.addNew( adminform.searchText[indexItem], $index)"
+              >
+                Agregarlo
+              </md-button>
+            </md-not-found>
+          </md-autocomplete>
+        </div>
+        <div ng-if="attr.collection" flex ng-init="item[name] = item[name] || []">
+          <md-chips
+            ng-model="item[name]"
+            md-autocomplete-snap
+            md-transform-chip="adminform.transformChip($chip)"
+            md-require-match="true"
+          >
+            <md-autocomplete
+              md-selected-item="adminform.selectedItemChip"
+              md-search-text="adminform.searchTextChip[indexItem]"
+              md-items="subitem in adminform.querySearchChip(attr, indexItem)"
+              md-item-text="subitem.nombre || subitem.titulo || subitem.enunciado  || subitem"
+              placeholder="{{ ::name }}">
+              <span md-highlight-text="adminform.searchTextChip[indexItem]">
+                {{ subitem.nombre || subitem.titulo || subitem.enunciado  || subitem }}
+              </span>
+            </md-autocomplete>
+            <md-chip-template>
+              <span>
+                {{ $chip.nombre || $chip.titulo || $chip.enunciado  || $chip }}
+              </span>
+            </md-chip-template>
+          </md-chips>
+        </div>
+      </div>
+    </md-content>
+  </form>
+</div>

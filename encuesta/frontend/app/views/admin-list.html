@@ -1,0 +1,106 @@
+
+<!--<table>
+  <thead>
+    <tr>
+      <td ng-repeat="(name, attr) in adminlist.attrs">
+        {{ name }}
+      </td>
+      <td>
+        acciones
+      </td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="item in adminlist.list">
+      <td ng-repeat="(name, attr) in adminlist.attrs">
+        {{ item[name] }}
+      </td>
+    </tr>
+  </tbody>
+</table>-->
+<md-toolbar class="md-hue-2">
+  <div
+    class="md-toolbar-tools"
+    ng-if="adminlist.selected.length > 0"
+  >
+    <span flex></span>
+    <!--<md-button ui-sref="admin.list.form('id': '{{ adminlist.getSelectedIds() }}')">-->
+    <md-button
+      ui-sref="admin.list.form( { 'id': '{{ adminlist.getSelectedIds() }}' } )"
+    >
+      Editar
+    </md-button>
+    <md-button ng-click="adminlist.destroy()">
+      Borrar
+    </md-button>
+  </div>
+  <div
+    class="md-toolbar-tools"
+    ng-if="adminlist.selected.length <= 0"
+  >
+    <md-button ui-sref="admin.list.form({'id': 'add'})">
+      Agregar
+    </md-button>
+    <md-button ng-click="adminlist.toggleShowList()">
+      {{ adminlist.showlist?'ocultar':'mostrar'}} tabla
+    </md-button>
+  </div>
+</md-toolbar>
+<md-content>
+  <md-table-container flex ng-show="adminlist.showlist">
+    <table
+      md-table
+      md-row-select
+      multiple
+      ng-model="adminlist.selected"
+      md-progress="adminlist.promise"
+    >
+      <thead
+        md-head
+        md-order="adminlist.query.order"
+        md-on-reorder="adminlist.getList"
+      >
+      <tr md-row>
+        <th
+          md-column
+          md-order-by="{{ ::key }}"
+          ng-repeat="(name, attr) in adminlist.attrs"
+        >
+            <span>
+                {{ ::name }}
+            </span>
+        </th>
+      </tr>
+      </thead>
+      <tbody md-body>
+      <tr
+        ng-repeat="item in adminlist.list"
+        md-row
+        md-select="item"
+        md-select-id="id"
+        md-auto-select
+      >
+        <td
+          md-cell
+          ng-repeat="(name, attr) in adminlist.attrs"
+        >
+          {{ item[name] }}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  </md-table-container>
+
+  <!--
+  <md-table-pagination
+    md-limit="query.limit"
+    md-limit-options="[10, 15, 25, 40]"
+    md-page="query.page"
+    md-total="{{ count }}"
+    md-on-paginate="reloadList"
+    md-page-select
+    md-label="{{ ::labelpagination }}"
+  ></md-table-pagination>-->
+  <div ui-view></div>
+</md-content>

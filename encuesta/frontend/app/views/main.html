@@ -1,0 +1,67 @@
+
+<md-toolbar class="md-hue-2">
+  <div class="md-toolbar-tools" layout-align="center center">
+    {{ ::main.colegio.nombre }} - 2016
+  </div>
+</md-toolbar>
+<md-toolbar class="md-hue-1 md-accent">
+  <div class="md-toolbar-tools" layout-align="center center">
+    {{ ::main.encuesta.titulo }}
+  </div>
+</md-toolbar>
+<md-content flex layout="column">
+  <div>
+    <p layout-padding layout-align="center center" layout="row">
+      <span>¡ Tu Opinión Cuenta !</span>
+    </p>
+    <p layout-margin layout-align="center center" layout="row">
+      <span>{{ ::main.encuesta.ayuda }}</span>
+    </p>
+  </div>
+  <form
+    ng-if="!encuestaIniciada"
+    ng-submit="main.iniciarEncuesta()"
+    class="md-primary md-hue-2"
+    layout="row"
+    layout-margin
+    layout-align="center center"
+  >
+    <md-input-container>
+      <label>Curso</label>
+      <md-select ng-model="main.cursoEstudiante">
+        <md-option ng-repeat="curso in main.cursos" value="{{curso.id}}">
+          {{curso.codigo}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+    <md-input-container>
+      <label>Código</label>
+      <md-select ng-model="main.codigoEstudiante" md-disabled="main.getCodigos().length < 1">
+        <md-option ng-repeat="codigo in main.getCodigos()" value="{{codigo}}">
+          {{codigo}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+    <md-input-container>
+      <label>Área</label>
+      <md-select ng-model="main.area">
+        <md-option ng-repeat="area in main.areas" value="{{ area.id }}">
+          {{ area.nombre }}
+        </md-option>
+      </md-select>
+    </md-input-container>
+    <md-input-container>
+      <label>Docente</label>
+      <md-select ng-model="main.docente">
+        <md-option ng-repeat="docente in main.docentes" value="{{ docente.id }}">
+          {{ docente.nombre }}
+        </md-option>
+      </md-select>
+    </md-input-container>
+    <md-button
+      class="md-raised md-primary md-hue-2"
+      type="submit"
+    >Sig.</md-button>
+  </form>
+  <div ui-view style="margin:16px"></div>
+</md-content>
