@@ -57,14 +57,13 @@
     <p ng-if="pregunta.hasRecursos">
       {{ ::(($index + 1) + '. ' + pregunta.enunciado) }}
     </p>
-    <div>
+    <div ng-if="pregunta.hasRecursos">
       <md-button
         class="md-raised"
         ng-class="{'md-primary': encuesta.rtaSelected(pregunta, recurso)}"
         aria-label="{{ recurso.nombre || 'recurso' }}"
         ng-click="encuesta.saveRespuesta(pregunta, recurso)"
         ng-repeat="recurso in encuesta.recursos | filter:encuesta.filterRecurso"
-        ng-if="pregunta.hasRecursos"
       >
         {{ recurso.nombre }}
       </md-button>

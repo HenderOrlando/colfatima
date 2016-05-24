@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b3990451-301c-4e9a-b5dc-9116c462ca05" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../backend/config/cors.js" afterPath="$PROJECT_DIR$/../backend/config/cors.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/encuesta.html" afterPath="$PROJECT_DIR$/app/views/encuesta.html" />
     </list>
     <ignored path="colfatima.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,10 +34,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="model.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="model.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/scripts/services/model.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.48422498">
+            <state vertical-scroll-proportion="0.0">
               <caret line="28" column="41" selection-start-line="28" selection-start-column="41" selection-end-line="28" selection-end-column="41" />
               <folding />
             </state>
@@ -65,11 +66,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="encuesta.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="encuesta.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/encuesta.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="65" column="57" selection-start-line="65" selection-start-column="57" selection-end-line="65" selection-end-column="57" />
+            <state vertical-scroll-proportion="0.34042552">
+              <caret line="59" column="37" selection-start-line="59" selection-start-column="37" selection-end-line="59" selection-end-column="37" />
               <folding>
                 <element signature="n#style#0;n#div#1;n#div#0;n#md-toolbar#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#md-content#0;n#!!top" expanded="true" />
@@ -154,10 +155,10 @@
         <option value="$PROJECT_DIR$/app/scripts/controllers/main.js" />
         <option value="$PROJECT_DIR$/app/views/main.html" />
         <option value="$PROJECT_DIR$/app/index.html" />
-        <option value="$PROJECT_DIR$/app/views/encuesta.html" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/encuesta.js" />
         <option value="$PROJECT_DIR$/app/views/admin.html" />
         <option value="$PROJECT_DIR$/app/scripts/services/model.js" />
+        <option value="$PROJECT_DIR$/app/views/encuesta.html" />
       </list>
     </option>
   </component>
@@ -682,17 +683,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/encuesta.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="65" column="57" selection-start-line="65" selection-start-column="57" selection-end-line="65" selection-end-column="57" />
-          <folding>
-            <element signature="n#style#0;n#div#1;n#div#0;n#md-toolbar#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#md-content#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/scripts/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -727,9 +717,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/scripts/services/model.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.48422498">
+        <state vertical-scroll-proportion="0.0">
           <caret line="28" column="41" selection-start-line="28" selection-start-column="41" selection-end-line="28" selection-end-column="41" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/encuesta.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.34042552">
+          <caret line="59" column="37" selection-start-line="59" selection-start-column="37" selection-end-line="59" selection-end-column="37" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#div#0;n#md-toolbar#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#md-content#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
