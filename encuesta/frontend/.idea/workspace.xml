@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b3990451-301c-4e9a-b5dc-9116c462ca05" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/model.js" afterPath="$PROJECT_DIR$/app/scripts/services/model.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../backend/config/cors.js" afterPath="$PROJECT_DIR$/../backend/config/cors.js" />
     </list>
     <ignored path="colfatima.iws" />
     <ignored path=".idea/workspace.xml" />
