@@ -26,7 +26,7 @@ angular.module('colfatimaApp')
         return models;
       }*/
       return $q(function(resolve, reject){
-        $http.get('http://localhost:1337/admin/attributes/lista')
+        $http.get('http://104.236.247.198:1339/admin/attributes/lista')
           .then(function(data){
             models = {};
             data = data.data;
@@ -49,7 +49,7 @@ angular.module('colfatimaApp')
     function Model (modelname, data){
       data = data || null;
       var
-        url = 'http://localhost:1337',
+        url = 'http://104.236.247.198:1339',
         urladmin = url + '/admin',
         urlattrs = urladmin + '/attributes',
         obj = {
