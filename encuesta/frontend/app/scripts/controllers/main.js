@@ -53,7 +53,7 @@ angular.module('colfatimaApp')
     });
 
     function iniciarEncuesta(){
-      if(vm.codigoEstudiante && vm.cursoEstudiante){
+      if(vm.codigoEstudiante && vm.cursoEstudiante && vm.docente && vm.area){
         var curso = vm.cursos.filter(function(curso){
           //console.log(curso)
           return curso.id === vm.cursoEstudiante;
@@ -72,17 +72,22 @@ angular.module('colfatimaApp')
           }
         }
       }else{
-        var msg = 'Por favor, ingresa ';
-        if(!vm.codigoEstudiante && !vm.cursoEstudiante){
-          msg += 'el código y el curso'
-        }else if(!vm.codigoEstudiante){
-          msg += 'el código'
-        } else if(!vm.cursoEstudiante){
-          msg += 'el curso'
-        }else{
-          msg += 'por favor, rectifica los datos'
+        var
+          msgs = [],
+          msg = 'Por favor, verifica ';
+        if(!vm.area){
+          msgs.push('el area');
         }
-        showToast(msg);
+        if(!vm.docente){
+          msgs.push('el docente');
+        }
+        if(!vm.codigoEstudiante){
+          msgs.push('el código');
+        }
+        if(!vm.cursoEstudiante){
+          msgs.push('el curso');
+        }
+        showToast(msg + msgs.join(', '));
       }
     }
 
