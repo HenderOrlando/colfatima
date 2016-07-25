@@ -277,7 +277,7 @@ angular.module('colfatimaApp')
 
         var
           serie = [],
-          labels = vm.graph.labels[preg.id] || [],
+          labels = [],
           est = getEstadistica(preg),
           type = 'Bar'
         ;
@@ -285,21 +285,23 @@ angular.module('colfatimaApp')
           _.forEach(preg.opciones, function(opt){
             var val = (est && est[opt.id]) || 0;
             serie.push(val);
-            if(vm.graph.series[preg.id].length < 1){
+            labels.push(opt.enunciado);
+            /*if(vm.graph.series[preg.id].length < 1){
               labels.push(opt.enunciado);
-            }
+            }*/
           });
         }else{
           type = 'Pie';
           _.forEach(vm.recursos, function(opt){
             var
               val = (est && est[opt.id]) || 0,
-              percent = est.total && est.total > 0?Math.round((val / est.total) * 100):0
+              percent = est && est.total && est.total > 0?Math.round((val / est.total) * 100):0
               ;
             serie.push(val);
-            if(vm.graph.series[preg.id].length < 1){
+            labels.push(opt.nombre + ' (' + percent + '%)');
+            /*if(vm.graph.series[preg.id].length < 1){
               labels.push(opt.nombre + ' (' + percent + '%)');
-            }
+            }*/
           });
         }
 
@@ -320,7 +322,7 @@ angular.module('colfatimaApp')
         }
         vm.graph.data[preg.id] = serie;
       });
-      console.log(vm.graph)
+      //console.log(vm.graph)
     }
 
     /*$http.post(url + 'encuesta/create', {
