@@ -1,5 +1,10 @@
 <md-toolbar class="md-accent md-hue-1">
-  <div class="md-toobar-tools" layout="row" layout-align="center end">
+  <div
+    flex
+    layout="row"
+    class="md-toobar-tools"
+    layout-align="center center"
+  >
     <div
       flex="40"
       flex-gt-sm="60"
@@ -41,10 +46,10 @@
       </p>
       <div
         flex
-        ng-repeat="opt in pregunta.opciones"
-        layout="row"
-        layout="wrap"
+        layout="column"
+        layout-align="center center"
         ng-if="!pregunta.hasRecursos"
+        ng-repeat="opt in pregunta.opciones"
       >
         <md-button
           class="md-raised"

@@ -18,14 +18,42 @@ angular
     'ui.router',
     'ngSanitize',
     'md.data.table',
-    'ngMaterial'
+    'ngMaterial',
+    'chart.js'
   ])
   .config(function (
     $mdThemingProvider,
     $mdIconProvider,
     $stateProvider,
-    $urlRouterProvider
+    $urlRouterProvider,
+    ChartJsProvider
 ) {
+    ChartJsProvider.setOptions({
+      backgroundColor: '#eee',
+      showTooltips: false,
+      /*title: {
+        display: true,
+        position: 'top'
+      },
+      legend: {
+        display: true,
+        position: 'bottom'
+      },*/
+      /*multiTooltipTemplate: function(label){
+        return label.datasetLabel + ': ' + label.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      },*/
+      onAnimationComplete: function () {
+        var data = this.datasets || this.segments;
+        /*console.log(this)
+        console.log(data)
+        console.log(data[0])*/
+        if(data[0] && data[0].bars){
+          data = data[0].bars;
+        }
+        this.showTooltip(data, true);
+      }
+    });
+
     $mdThemingProvider.theme('default')
       .primaryPalette('green')// hue-2
       .accentPalette('amber')// hue-1
@@ -71,5 +99,4 @@ angular
         controllerAs: 'adminform'
       })
     ;
-
   });
