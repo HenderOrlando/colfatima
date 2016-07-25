@@ -8,7 +8,7 @@
  * Controller of the colfatimaApp
  */
 angular.module('colfatimaApp')
-  .controller('AdminCtrl', function ($http, Model, $q) {
+  .controller('AdminCtrl', function ($http, Model, $q, $mdToast) {
     var
       vm = this,
       Area = Model.getNew('area'),
@@ -65,15 +65,28 @@ angular.module('colfatimaApp')
       series: {},
       labels: {},
       options: {},
-      datasetOverride: {}
+      datasetOverride: {},
+      general: {
+        type: 'Bar',
+        data: [],
+        series: [],
+        labels: [],
+        options: {},
+        datasetOverride: {}
+      }
     };
+    vm.usr = {};
 
     vm.loadSelectedDocente = loadSelectedDocente;
     vm.loadSelectedGrado = loadSelectedGrado;
     vm.loadSelectedCurso = loadSelectedCurso;
     vm.loadSelectedArea = loadSelectedArea;
+    vm.getEstadistica = getEstadistica;
+    vm.getHeaderTable = getHeaderTable;
     vm.estadistica = estadistica;
     vm.toggleShow = toggleShow;
+    vm.getTable = getTable;
+    vm.entrar = entrar;
 
     /*Model.getAttrs().then(function(data){
       angular.forEach(data, function(model, key){
@@ -192,10 +205,12 @@ angular.module('colfatimaApp')
     }
 
     function loadSelectedArea(){
+      vm.docente = {};
       loadSelectedItem('area');
     }
 
     function loadSelectedDocente(){
+      vm.area = {};
       loadSelectedItem('docente');
     }
 
@@ -205,8 +220,7 @@ angular.module('colfatimaApp')
           var query = {};
           if(vm.area && vm.area.id){
             query.area = vm.area.id;
-          }
-          if(vm.docente && vm.docente.id){
+          }else if(vm.docente && vm.docente.id){
             query.docente = vm.docente.id;
           }
         }else{
@@ -214,10 +228,10 @@ angular.module('colfatimaApp')
             vm[name] = {};
           }
         }
-        getDataGraph();
       }else{
         vm[name] = {};
       }
+      getDataGraph();
     }
 
     function estadistica(pregunta, rta, total){
@@ -257,13 +271,27 @@ angular.module('colfatimaApp')
     }
 
     function getDataGraph(){
-      _.forEach(vm.encuesta.preguntas, function(preg){
-        vm.graph.datasetOverride[preg.id] = vm.graph.datasetOverride[preg.id] || [];
+      var labelsgeneral = {};
+      vm.graph.general.options = {};
+      _.forEach(vm.encuesta.preguntas, function(preg, i){
+        var
+          est = getEstadistica(preg),
+          serie = [],
+          labels = [],
+          type = 'Bar'
+        ;
+        vm.graph.datasetOverride[preg.id] = [];
+        vm.graph.type[preg.id] = type;
+        vm.graph.labels[preg.id] = labels;
+        vm.graph.series[preg.id] = [];
+        vm.graph.data[preg.id] = [];
+        /*vm.graph.datasetOverride[preg.id] = vm.graph.datasetOverride[preg.id] || [];
         vm.graph.type[preg.id] = vm.graph.type[preg.id] || 'Bar';
         vm.graph.labels[preg.id] = vm.graph.labels[preg.id] || [];
         vm.graph.series[preg.id] = vm.graph.series[preg.id] || [];
-        vm.graph.data[preg.id] = vm.graph.data[preg.id] || [];
+        vm.graph.data[preg.id] = vm.graph.data[preg.id] || [];*/
         vm.graph.options[preg.id] = vm.graph.options[preg.id] || {
+            responsive: false,
             legend: {
               display: true,
               position: 'bottom'
@@ -272,24 +300,34 @@ angular.module('colfatimaApp')
               display: true,
               position: 'top',
               text: preg.enunciado
+            },
+            showTooltips: false,
+            onAnimationComplete: function () {
+              var data = this.datasets || this.segments;
+              if(data[0] && data[0].bars){
+                data = data[0].bars;
+              }
+              this.showTooltip(data, true);
             }
           };
-
-        var
-          serie = [],
-          labels = [],
-          est = getEstadistica(preg),
-          type = 'Bar'
-        ;
+        /*if(!est){
+         }*/
         if(preg.opciones && preg.opciones.length > 0){
+          vm.graph.general.labels.push((i + 1) + '. ' + _.truncate(preg.enunciado));
           _.forEach(preg.opciones, function(opt){
-            var val = (est && est[opt.id]) || 0;
-            serie.push(val);
-            labels.push(opt.enunciado);
+            //console.log(preg.enunciado, ' - ', opt.enunciado, '(',opt.id,') => ',est[opt.id])
+            var value = (est && est[opt.id]) || 0;
+            serie.push(value);
+            labelsgeneral[opt.id] = labelsgeneral[opt.id] || [];
+            labelsgeneral[opt.id].push(value);
+            labels.push(_.truncate(opt.enunciado));
             /*if(vm.graph.series[preg.id].length < 1){
               labels.push(opt.enunciado);
             }*/
           });
+          if(vm.graph.general.series.length < 1){
+            vm.graph.general.series = labels;
+          }
         }else{
           type = 'Pie';
           _.forEach(vm.recursos, function(opt){
@@ -297,6 +335,7 @@ angular.module('colfatimaApp')
               val = (est && est[opt.id]) || 0,
               percent = est && est.total && est.total > 0?Math.round((val / est.total) * 100):0
               ;
+            //console.log(est[opt.id])
             serie.push(val);
             labels.push(opt.nombre + ' (' + percent + '%)');
             /*if(vm.graph.series[preg.id].length < 1){
@@ -322,7 +361,70 @@ angular.module('colfatimaApp')
         }
         vm.graph.data[preg.id] = serie;
       });
+      vm.graph.general.data = _.values(labelsgeneral);
       //console.log(vm.graph)
+    }
+
+    function entrar(){
+      vm.usr.login = vm.usr.email === 'aura_bonett@hotmail.com' && vm.usr.clave === 'hijos8793';
+      var toast = $mdToast.simple()
+        .textContent(vm.usr.login?'Binevenido':'Usuario o clave errónea')
+          .position('top right')
+      ;
+      $mdToast.show(toast)
+
+    }
+
+    function getHeaderTable(preg){
+      var header = ['pregunta'];
+      if(preg && preg.opciones && preg.opciones.length > 0){
+        _.forEach(preg.opciones, function(opt){
+          header.push(opt.enunciado);
+          header.push(opt.enunciado + '%');
+        });
+        header.push('total');
+      }else{
+        header = getHeaderTable(vm.encuesta.preguntas[0]);
+      }
+      return header;
+    }
+
+    function getTable(preg){
+      var
+        tabla = [],
+        est = null,
+        row = {}
+      ;
+      if(preg){
+        if(preg.opciones && preg.opciones.length > 0){
+          est = getEstadistica(preg);
+          row['pregunta'] = preg.enunciado;
+          _.forEach(preg.opciones, function(opt){
+            row[opt.enunciado] = (est && est[opt.id]) || 0;
+            if(est.total > 0){
+              row[opt.enunciado + '%'] = ((row[opt.enunciado] / est.total) * 100).toFixed(2) + '%';
+            }else{
+              row[opt.enunciado + '%'] = 0 + '%';
+            }
+          });
+          row.total = est.total;
+          tabla.push(row);
+        }
+      }else {
+        var total = 0;
+        _.forEach(vm.encuesta.preguntas, function(preg){
+          if(preg.opciones && preg.opciones.length > 0){
+            row[preg.enunciado] = getTable(preg)[0];
+            total += row[preg.enunciado].total;
+          }
+        });
+        /*var headers = getHeaderTable(vm.encuesta.preguntas[0]);
+        headers[headers.length] = total;
+        row.total = headers;*/
+        tabla = _.values(row);
+      }
+      //console.log(tabla);
+      return tabla;
     }
 
     /*$http.post(url + 'encuesta/create', {

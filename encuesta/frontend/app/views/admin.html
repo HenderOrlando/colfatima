@@ -1,231 +1,315 @@
 
-
-<md-toolbar>
-  <md-content class="md-toolbar-tools">
-    <div layout="column">
-      <md-button
-        ui-sref="admin"
-      >
-        Estadísticas
-      </md-button>
-    </div>
-    <div layout="column" ng-repeat="model in admin.models">
-      <md-button
-        ui-sref="admin.list({'model': model.modelname})"
-      >
-        {{ ::model.modelname }}
-      </md-button>
-    </div>
-  </md-content>
-</md-toolbar>
-<md-content
-  flex
-  ui-view
+<!--<div
+  class="login"
+  layout-fill
+  layout="column"
+  ng-hide="admin.usr.login"
+  layout-align="center center"
 >
-  <div layout="row" layout-align="center center">
-    <div layout="column" flex>
-      <md-button
-        class="md-primary md-hue-2"
-        ng-class="{'md-raised':admin.show === 'table'}"
-        ng-disabled="admin.show === 'table'"
-        ng-click="admin.toggleShow('table')"
-      >
-        Tabla
-      </md-button>
-    </div>
-    <div layout="column" flex>
-      <md-button
-        class="md-primary md-hue-2"
-        ng-class="{'md-raised':admin.show === 'graph'}"
-        ng-disabled="admin.show === 'graph'"
-        ng-click="admin.toggleShow('graph')"
-      >
-        Gráfico
-      </md-button>
-    </div>
-    <div layout="column">
-      <md-input-container layout="row">
-        <label>Área</label>
-        <md-select
-          flex
-          ng-model="admin.area"
-          class="md-primary md-hue-2"
-          md-on-close="admin.loadSelectedArea()"
+ <div
+   layout="row"
+   layout-align="center center"
+ >
+   <form ng-submit="admin.entrar()">
+     <md-input-container>
+       <label>Email</label>
+       <input ng-model="admin.usr.email" />
+     </md-input-container>
+     <md-input-container>
+       <label>Clave</label>
+       <input type="password" ng-model="admin.usr.clave" />
+     </md-input-container>
+     <md-button type="submit">
+       Entrar
+     </md-button>
+   </form>
+ </div>
+</div>-->
+<div
+  layout="column"
+>
+  <!--ng-if="admin.usr.login"-->
+  <!--<md-toolbar>
+    <md-content class="md-toolbar-tools">
+      <div layout="column">
+        <md-button
+          ui-sref="admin"
         >
-          <md-option ng-repeat="area in admin.areas" ng-value="{{ area }}">
-            {{ ::area.nombre }}
-          </md-option>
-        </md-select>
-      </md-input-container>
-    </div>
-    <div layout="column">
-      <md-input-container layout="row">
-        <label>Docente</label>
-        <md-select
-          flex
-          ng-model="admin.docente"
-          class="md-primary md-hue-2"
-          md-on-close="admin.loadSelectedDocente()"
+          Estadísticas
+        </md-button>
+      </div>
+      <div layout="column" ng-repeat="model in admin.models">
+        <md-button
+          ui-sref="admin.list({'model': model.modelname})"
         >
-          <md-option ng-repeat="docente in admin.docentes" ng-value="{{ docente }}">
-            {{ ::docente.nombre }}
-          </md-option>
-        </md-select>
-      </md-input-container>
-    </div>
-  </div>
+          {{ ::model.modelname }}
+        </md-button>
+      </div>
+    </md-content>
+  </md-toolbar>-->
   <md-content
     flex
-    ng-if="admin.show === 'graph'"
-    class="content-canvas"
-  >
-    <div
-      ng-repeat="preg in admin.encuesta.preguntas"
-    >
-      <md-toolbar class="md-primary md-hue-2">
-        <div
-          layout-align="center center"
-          class="md-toobar-tools"
-          layout="column"
-          flex
-        >
-          {{ ::(($index + 1) + '. ' + admin.graph.options[preg.id].title.text) }}
-        </div>
-      </md-toolbar>
-      <md-content>
-        <canvas
-          width="800"
-          height="400"
-          class="chart-base"
-          id="graph-base-{{ ::preg.id}}"
-          chart-legend="true"
-          chart-type="admin.graph.type[preg.id]"
-          chart-data="admin.graph.data[preg.id]"
-          chart-labels="admin.graph.labels[preg.id]"
-          chart-series="admin.graph.series[preg.id]"
-          chart-options="admin.graph.options[preg.id]"
-          chart-dataset-override="admin.graph.datasetOverride[preg.id]"
-        ></canvas>
-      </md-content>
-    </div>
-  </md-content>
-  <md-content
-    flex
-    ng-show="admin.show === 'table'"
+    ui-view
+    layout="column"
   >
     <md-toolbar class="md-accent md-hue-1">
-      <div class="md-toobar-tools" layout="row" layout-align="center end">
-        <div
-          flex="40"
-          flex-gt-sm="60"
-          layout-align="center center"
-          class="md-headline"
-        >
-          <div
-            layout-margin
-            layout-padding
-            ng-if="(!admin.grado || !admin.grado.id) && (!admin.curso || !admin.curso.id) && (!admin.area || !admin.area.id) && (!admin.docente || !admin.docente.id)"
+      <div
+        layout-align="center center"
+        class="md-tooltip-tools"
+        layout="row"
+      >
+        <div layout="column" flex>
+          <md-button
+            class="md-primary md-hue-2"
+            ng-class="{'md-raised':admin.show === 'table'}"
+            ng-disabled="admin.show === 'table'"
+            ng-click="admin.toggleShow('table')"
           >
-            General
-          </div>
-          <div
-            layout-margin
-            layout-padding
-            ng-if="(admin.grado && admin.grado.id) || (admin.curso && admin.curso.id) || (admin.area && admin.area.id) || (admin.docente && admin.docente.id)"
+            Tabla
+          </md-button>
+        </div>
+        <div layout="column" flex>
+          <md-button
+            class="md-primary md-hue-2"
+            ng-class="{'md-raised':admin.show === 'graph'}"
+            ng-disabled="admin.show === 'graph'"
+            ng-click="admin.toggleShow('graph')"
           >
-         <span ng-if="admin.grado && admin.grado.id">
-           {{ admin.grado.codigo }}/
-         </span>
-            <span ng-if="admin.curso && admin.curso.id">
-           {{ admin.curso.codigo }}/
-         </span>
-            <span ng-if="admin.area && admin.area.id">
-           {{ admin.area.nombre }}/
-         </span>
-            <span ng-if="admin.docente && admin.docente.id">
-           {{ admin.docente.nombre }}
-         </span>
-          </div>
+            Gráfico por Pregunta
+          </md-button>
         </div>
-        <div
-          flex
-          style="text-align: center"
-          layout-align="center center"
-          layout="column"
-          ng-repeat="opt in admin.encuesta.preguntas[0].opciones"
-        >
-        <span aria-label="opt.enunciado">
-          {{ ::opt.enunciado }}
-        </span>
+        <div layout="column" flex>
+          <md-button
+            class="md-primary md-hue-2"
+            ng-class="{'md-raised':admin.show === 'graph-general'}"
+            ng-disabled="admin.show === 'graph-general'"
+            ng-click="admin.toggleShow('graph-general')"
+          >
+            Gráfico General
+          </md-button>
         </div>
-        <div
-          flex
-          style="text-align: center"
-          layout-align="center center"
-          layout="column"
-        >
-        <span aria-label="total">
-          Total
-        </span>
+        <div layout="column">
+          <md-input-container layout="row">
+            <label>Área</label>
+            <md-select
+              flex
+              ng-model="admin.area"
+              class="md-primary md-hue-2"
+              md-on-close="admin.loadSelectedArea()"
+            >
+              <md-option ng-repeat="area in admin.areas" ng-value="{{ area }}">
+                {{ ::area.nombre }}
+              </md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+        <div layout="column">
+          <md-input-container layout="row">
+            <label>Docente</label>
+            <md-select
+              flex
+              ng-model="admin.docente"
+              class="md-primary md-hue-2"
+              md-on-close="admin.loadSelectedDocente()"
+            >
+              <md-option ng-repeat="docente in admin.docentes" ng-value="{{ docente }}">
+                {{ ::docente.nombre }}
+              </md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+        <div layout="column">
+          <md-button
+            field-separator=";"
+            csv-header="admin.getHeaderTable()"
+            ng-csv="admin.getTable()" filename="Estadísticas-{{ admin.docente?admin.docente.nombre:admin.area?admin.area.nombre:'General' }}.csv"
+          >
+            Descargar Estadísticas
+          </md-button>
         </div>
       </div>
     </md-toolbar>
     <md-content
-      layout="column"
       flex
+      ng-if="admin.show === 'graph-general'"
+      class="content-canvas"
+    >
+      <canvas
+        width="800"
+        height="400"
+        class="chart-base"
+        id="graph-general"
+        chart-legend="true"
+        chart-type="admin.graph.general.type"
+        chart-data="admin.graph.general.data"
+        chart-labels="admin.graph.general.labels"
+        chart-series="admin.graph.general.series"
+        chart-options="admin.graph.general.options"
+        chart-dataset-override="admin.graph.general.datasetOverride"
+      ></canvas>
+    </md-content>
+    <md-content
+      flex
+      ng-if="admin.show === 'graph'"
+      class="content-canvas"
     >
       <div
-        layout="column"
-        style="padding: 4px 15px;"
-        ng-repeat="pregunta in admin.encuesta.preguntas"
-        class="md-whiteframe-1dp"
+        ng-repeat="preg in admin.encuesta.preguntas"
       >
-        <div ng-if="!pregunta.hasRecursos" layout="row">
-          <p
+        <md-toolbar class="md-primary md-hue-2">
+          <div
+            layout-align="center center"
+            class="md-toobar-tools"
+            layout="row"
+            flex
+          >
+            <span flex>
+              {{ ::(($index + 1) + '. ' + admin.graph.options[preg.id].title.text) }}
+            </span>
+            <md-button
+              field-separator=";"
+              csv-header="admin.getHeaderTable(preg)"
+              ng-csv="admin.getTable(preg)" filename="{{ ::(($index + 1) + '-' + admin.graph.options[preg.id].title.text) }}.csv"
+            >
+              Descargar Tabla
+            </md-button>
+          </div>
+        </md-toolbar>
+        <md-content>
+          <canvas
+            width="800"
+            height="400"
+            class="chart-base"
+            id="graph-base-{{ ::preg.id}}"
+            chart-legend="true"
+            chart-type="admin.graph.type[preg.id]"
+            chart-data="admin.graph.data[preg.id]"
+            chart-labels="admin.graph.labels[preg.id]"
+            chart-series="admin.graph.series[preg.id]"
+            chart-options="admin.graph.options[preg.id]"
+            chart-dataset-override="admin.graph.datasetOverride[preg.id]"
+          ></canvas>
+        </md-content>
+      </div>
+    </md-content>
+    <md-content
+      flex
+      ng-show="admin.show === 'table'"
+    >
+      <md-toolbar class="md-accent md-hue-1">
+        <div class="md-toobar-tools" layout="row" layout-align="center end">
+          <div
             flex="40"
             flex-gt-sm="60"
-          >
-            {{ ::(($index + 1) + '. ' + pregunta.enunciado) }}
-          </p>
-          <div
-            flex
-            layout="row"
-            layout="wrap"
             layout-align="center center"
-            ng-if="!pregunta.hasRecursos"
-            ng-repeat="opt in pregunta.opciones"
+            class="md-headline"
           >
-            {{ admin.estadistica(pregunta, opt) }}
+            <div
+              layout-margin
+              layout-padding
+              ng-if="(!admin.grado || !admin.grado.id) && (!admin.curso || !admin.curso.id) && (!admin.area || !admin.area.id) && (!admin.docente || !admin.docente.id)"
+            >
+              General
+            </div>
+            <div
+              layout-margin
+              layout-padding
+              ng-if="(admin.grado && admin.grado.id) || (admin.curso && admin.curso.id) || (admin.area && admin.area.id) || (admin.docente && admin.docente.id)"
+            >
+         <span ng-if="admin.grado && admin.grado.id">
+           {{ admin.grado.codigo }}/
+         </span>
+              <span ng-if="admin.curso && admin.curso.id">
+           {{ admin.curso.codigo }}/
+         </span>
+              <span ng-if="admin.area && admin.area.id">
+           {{ admin.area.nombre }}/
+         </span>
+              <span ng-if="admin.docente && admin.docente.id">
+           {{ admin.docente.nombre }}
+         </span>
+            </div>
           </div>
           <div
             flex
-            layout="row"
-            layout="wrap"
+            style="text-align: center"
             layout-align="center center"
+            layout="column"
+            ng-repeat="opt in admin.encuesta.preguntas[0].opciones"
           >
-            {{ admin.estadistica(pregunta, null, true) }}
+        <span aria-label="opt.enunciado">
+          {{ ::opt.enunciado }}
+        </span>
+          </div>
+          <div
+            flex
+            style="text-align: center"
+            layout-align="center center"
+            layout="column"
+          >
+        <span aria-label="total">
+          Total
+        </span>
           </div>
         </div>
-        <p ng-if="pregunta.hasRecursos">
-          {{ ::(($index + 1) + '. ' + pregunta.enunciado) }}
-        </p>
-        <div ng-if="pregunta.hasRecursos">
-          <div
-            layout="row"
-            ng-repeat="recurso in admin.recursos"
-          >
+      </md-toolbar>
+      <md-content
+        layout="column"
+        flex
+      >
+        <div
+          layout="column"
+          style="padding: 4px 15px;"
+          ng-repeat="pregunta in admin.encuesta.preguntas"
+          class="md-whiteframe-1dp"
+        >
+          <div ng-if="!pregunta.hasRecursos" layout="row">
+            <p
+              flex="40"
+              flex-gt-sm="60"
+            >
+              {{ ::(($index + 1) + '. ' + pregunta.enunciado) }}
+            </p>
+            <div
+              flex
+              layout="row"
+              layout="wrap"
+              layout-align="center center"
+              ng-if="!pregunta.hasRecursos"
+              ng-repeat="opt in pregunta.opciones"
+            >
+              {{ admin.estadistica(pregunta, opt) }}
+            </div>
+            <div
+              flex
+              layout="row"
+              layout="wrap"
+              layout-align="center center"
+            >
+              {{ admin.estadistica(pregunta, null, true) }}
+            </div>
+          </div>
+          <p ng-if="pregunta.hasRecursos">
+            {{ ::(($index + 1) + '. ' + pregunta.enunciado) }}
+          </p>
+          <div ng-if="pregunta.hasRecursos">
+            <div
+              layout="row"
+              ng-repeat="recurso in admin.recursos"
+            >
             <span flex>
             {{ ::recurso.nombre }}
           </span>
-          <span>
+              <span>
             {{ admin.estadistica(pregunta, recurso) }}
             <md-tooltip>
               {{ ::recurso.nombre }}
             </md-tooltip>
           </span>
+            </div>
           </div>
         </div>
-      </div>
+      </md-content>
     </md-content>
   </md-content>
-</md-content>
+</div>

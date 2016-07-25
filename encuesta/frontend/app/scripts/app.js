@@ -19,7 +19,8 @@ angular
     'ngSanitize',
     'md.data.table',
     'ngMaterial',
-    'chart.js'
+    'chart.js',
+    'ngCsv'
   ])
   .config(function (
     $mdThemingProvider,
@@ -29,29 +30,7 @@ angular
     ChartJsProvider
 ) {
     ChartJsProvider.setOptions({
-      backgroundColor: '#eee',
-      showTooltips: false,
-      /*title: {
-        display: true,
-        position: 'top'
-      },
-      legend: {
-        display: true,
-        position: 'bottom'
-      },*/
-      /*multiTooltipTemplate: function(label){
-        return label.datasetLabel + ': ' + label.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-      },*/
-      onAnimationComplete: function () {
-        var data = this.datasets || this.segments;
-        /*console.log(this)
-        console.log(data)
-        console.log(data[0])*/
-        if(data[0] && data[0].bars){
-          data = data[0].bars;
-        }
-        this.showTooltip(data, true);
-      }
+      animation: false
     });
 
     $mdThemingProvider.theme('default')
