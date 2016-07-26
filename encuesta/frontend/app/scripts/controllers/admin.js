@@ -252,7 +252,7 @@ angular.module('colfatimaApp')
         est[rta.id] = 0;
         est.total = 0;
       }
-      var percent = est.total > 0?Math.round((value / est.total) * 100):0;
+      var percent = est.total > 0?((value / est.total) * 100).toFixed(2):0;
       value = value || 0;
       percent = percent || 0;
       return value + '(' + percent + '%' + ')';
@@ -273,6 +273,13 @@ angular.module('colfatimaApp')
     function getDataGraph(){
       var labelsgeneral = {};
       vm.graph.general.options = {};
+      if(vm.graph.general.labels.length < 1){
+        _.forEach(vm.encuesta.preguntas, function(preg, i){
+          if(preg.opciones && preg.opciones.length > 0) {
+            vm.graph.general.labels.push((i + 1) + '. ' + _.truncate(preg.enunciado));
+          }
+        });
+      }
       _.forEach(vm.encuesta.preguntas, function(preg, i){
         var
           est = getEstadistica(preg),
@@ -280,6 +287,7 @@ angular.module('colfatimaApp')
           labels = [],
           type = 'Bar'
         ;
+        //vm.graph.general.labels = [];
         vm.graph.datasetOverride[preg.id] = [];
         vm.graph.type[preg.id] = type;
         vm.graph.labels[preg.id] = labels;
@@ -300,20 +308,19 @@ angular.module('colfatimaApp')
               display: true,
               position: 'top',
               text: preg.enunciado
-            },
-            showTooltips: false,
-            onAnimationComplete: function () {
-              var data = this.datasets || this.segments;
-              if(data[0] && data[0].bars){
-                data = data[0].bars;
-              }
-              this.showTooltip(data, true);
             }
           };
         /*if(!est){
          }*/
         if(preg.opciones && preg.opciones.length > 0){
-          vm.graph.general.labels.push((i + 1) + '. ' + _.truncate(preg.enunciado));
+          vm.graph.options[preg.id].showTooltips =  false;
+          vm.graph.options[preg.id].onAnimationComplete = function () {
+            var data = this.datasets || this.segments;
+            if(data[0] && data[0].bars){
+              data = data[0].bars;
+            }
+            this.showTooltip(data, true);
+          };
           _.forEach(preg.opciones, function(opt){
             //console.log(preg.enunciado, ' - ', opt.enunciado, '(',opt.id,') => ',est[opt.id])
             var value = (est && est[opt.id]) || 0;

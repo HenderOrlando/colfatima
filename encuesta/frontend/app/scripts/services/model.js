@@ -8,8 +8,17 @@
  * Service in the colfatimaApp.
  */
 angular.module('colfatimaApp')
-  .service('Model', function ($http, $q) {
-    var models = null;
+  .service('Model', function ($http, $q, $location) {
+    var
+      models = null,
+      urlBase = 'http://'
+    ;
+
+    if($location.host().indexOf('localhost') < 0){
+      urlBase += '104.236.247.198/';
+    }else{
+      urlBase += 'localhost:1337/';
+    }
 
     return {
       getNew: getNew,
@@ -26,8 +35,9 @@ angular.module('colfatimaApp')
         return models;
       }*/
       return $q(function(resolve, reject){
+        $http.get(urlBase + 'admin/attributes/lista')
         //$http.get('http://104.236.247.198/admin/attributes/lista')
-        $http.get('http://localhost:1337/admin/attributes/lista')
+        //$http.get('http://localhost:1337/admin/attributes/lista')
           .then(function(data){
             models = {};
             data = data.data;
@@ -51,8 +61,8 @@ angular.module('colfatimaApp')
       data = data || null;
       var
         //url = 'http://104.236.247.198',
-        url = 'http://localhost:1337',
-        urladmin = url + '/admin',
+        //url = 'http://localhost:1337',
+        urladmin = urlBase + 'admin',
         urlattrs = urladmin + '/attributes',
         obj = {
           $modelname: modelname,
