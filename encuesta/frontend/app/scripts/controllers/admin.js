@@ -51,6 +51,9 @@ angular.module('colfatimaApp')
     };
     //vm.show = 'table';
     vm.show = 'graph';
+    vm.tiposGraph = [
+      'Line','Bar','HorizontalBar','Radar','Pie','PolarArea','Doughnut','Bubble',
+    ];
     vm.graph = {
       //type: 'Line',
       //type: 'Bar',

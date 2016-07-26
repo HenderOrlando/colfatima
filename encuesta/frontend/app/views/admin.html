@@ -1,5 +1,5 @@
 
-<div
+<!--<div
   class="login"
   layout-fill
   layout="column"
@@ -24,11 +24,11 @@
      </md-button>
    </form>
  </div>
-</div>
+</div>-->
 <div
   layout="column"
-  ng-if="admin.usr.login"
 >
+  <!--ng-if="admin.usr.login"-->
   <!--<md-toolbar>
     <md-content class="md-toolbar-tools">
       <div layout="column">
@@ -97,7 +97,7 @@
               class="md-primary md-hue-2"
               md-on-close="admin.loadSelectedArea()"
             >
-              <md-option ng-repeat="area in admin.areas" ng-value="{{ area }}">
+              <md-option ng-repeat="area in admin.areas" ng-value="area">
                 {{ ::area.nombre }}
               </md-option>
             </md-select>
@@ -112,7 +112,7 @@
               class="md-primary md-hue-2"
               md-on-close="admin.loadSelectedDocente()"
             >
-              <md-option ng-repeat="docente in admin.docentes" ng-value="{{ docente }}">
+              <md-option ng-repeat="docente in admin.docentes" ng-value="docente">
                 {{ ::docente.nombre }}
               </md-option>
             </md-select>
@@ -127,6 +127,23 @@
             Descargar Estadísticas
           </md-button>
         </div>
+      </div>
+      <div
+        layout="column"
+        ng-if="admin.show === 'graph-general'"
+      >
+        <md-input-container layout="row">
+          <label>Tipo Gráfico</label>
+          <md-select
+            flex
+            ng-model="admin.graph.general.type"
+            class="md-primary md-hue-2"
+          >
+            <md-option ng-repeat="tipograph in admin.tiposGraph" ng-value="tipograph">
+              {{ ::tipograph }}
+            </md-option>
+          </md-select>
+        </md-input-container>
       </div>
     </md-toolbar>
     <md-content
@@ -173,6 +190,18 @@
             >
               Descargar Tabla
             </md-button>
+            <md-input-container layout="row">
+              <label>Tipo Gráfico</label>
+              <md-select
+                flex
+                ng-model="admin.graph.type[preg.id]"
+                class="md-primary md-hue-2"
+              >
+                <md-option ng-repeat="tipograph in admin.tiposGraph" ng-value="tipograph">
+                  {{ ::tipograph }}
+                </md-option>
+              </md-select>
+            </md-input-container>
           </div>
         </md-toolbar>
         <md-content>

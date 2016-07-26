@@ -109,7 +109,7 @@ angular.module('colfatimaApp')
         return create(obj.toJSON());
       }
       function create(data){
-        return $http.post(url + '/' + modelname + '/create', data)
+        return $http.post(urlBase + modelname + '/create', data)
           .then(getResolve, getReject)
           ;
       }
@@ -118,7 +118,7 @@ angular.module('colfatimaApp')
         return update(obj.id, obj.toJSON());
       }
       function update(modelid, data){
-        return $http.put(url + '/' + modelname + '/update/' + modelid, data)
+        return $http.put(urlBase + modelname + '/update/' + modelid, data)
           .then(getResolve, getReject)
           ;
       }
@@ -128,14 +128,14 @@ angular.module('colfatimaApp')
       }
       function destroy(modelid){
         modelid = modelid || obj.id;
-        return $http.delete(url + '/' + modelname + '/' + modelid)
+        return $http.delete(urlBase + modelname + '/' + modelid)
           .then(getResolve, getReject)
           ;
       }
 
       function findOne(modelid){
         modelid = modelid || obj.id;
-        return $http.get(url + '/' + modelname + '/' + modelid)
+        return $http.get(urlBase + modelname + '/' + modelid)
           .then(getResolve, getReject)
           ;
       }
@@ -145,7 +145,7 @@ angular.module('colfatimaApp')
       }
       function find(where){
         where = where || {};
-        return $http.get(url + '/' + modelname, where)
+        return $http.get(urlBase + modelname, where)
           .then(getResolve, getReject)
           ;
       }
@@ -155,7 +155,7 @@ angular.module('colfatimaApp')
       }
       function populate(modelid, associationname){
         modelid = modelid || obj.id;
-        return $http.get(url + '/' + modelname + '/' + modelid + '/' + associationname)
+        return $http.get(urlBase + modelname + '/' + modelid + '/' + associationname)
           .then(getResolve, getReject)
           ;
       }
@@ -165,7 +165,7 @@ angular.module('colfatimaApp')
       }
       function add(modelid, associationname, associationid){
         modelid = modelid || obj.id;
-        return $http.post(url + '/' + modelname + '/' + modelid + '/' + associationname + '/' + associationid)
+        return $http.post(urlBase + modelname + '/' + modelid + '/' + associationname + '/' + associationid)
           .then(getResolve, getReject)
           ;
       }
@@ -175,7 +175,7 @@ angular.module('colfatimaApp')
       }
       function remove(modelid, associationname, associationid){
         modelid = modelid || obj.id;
-        return $http.delete(url + '/' + modelname + '/' + modelid + '/' + associationname + '/' + associationid)
+        return $http.delete(urlBase + modelname + '/' + modelid + '/' + associationname + '/' + associationid)
           .then(getResolve, getReject)
           ;
       }
