@@ -18,14 +18,21 @@ angular
     'ui.router',
     'ngSanitize',
     'md.data.table',
-    'ngMaterial'
+    'ngMaterial',
+    'chart.js',
+    'ngCsv'
   ])
   .config(function (
     $mdThemingProvider,
     $mdIconProvider,
     $stateProvider,
-    $urlRouterProvider
+    $urlRouterProvider,
+    ChartJsProvider
 ) {
+    ChartJsProvider.setOptions({
+      animation: false
+    });
+
     $mdThemingProvider.theme('default')
       .primaryPalette('green')// hue-2
       .accentPalette('amber')// hue-1
@@ -71,5 +78,4 @@ angular
         controllerAs: 'adminform'
       })
     ;
-
   });

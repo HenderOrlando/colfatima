@@ -8,8 +8,17 @@
  * Service in the colfatimaApp.
  */
 angular.module('colfatimaApp')
-  .service('Model', function ($http, $q) {
-    var models = null;
+  .service('Model', function ($http, $q, $location) {
+    var
+      models = null,
+      urlBase = 'http://'
+    ;
+
+    if($location.host().indexOf('localhost') < 0){
+      urlBase += '104.236.247.198/';
+    }else{
+      urlBase += 'localhost:1337/';
+    }
 
     return {
       getNew: getNew,
@@ -26,7 +35,9 @@ angular.module('colfatimaApp')
         return models;
       }*/
       return $q(function(resolve, reject){
-        $http.get('http://104.236.247.198/admin/attributes/lista')
+        $http.get(urlBase + 'admin/attributes/lista')
+        //$http.get('http://104.236.247.198/admin/attributes/lista')
+        //$http.get('http://localhost:1337/admin/attributes/lista')
           .then(function(data){
             models = {};
             data = data.data;
@@ -49,8 +60,9 @@ angular.module('colfatimaApp')
     function Model (modelname, data){
       data = data || null;
       var
-        url = 'http://104.236.247.198',
-        urladmin = url + '/admin',
+        //url = 'http://104.236.247.198',
+        //url = 'http://localhost:1337',
+        urladmin = urlBase + 'admin',
         urlattrs = urladmin + '/attributes',
         obj = {
           $modelname: modelname,
@@ -97,7 +109,7 @@ angular.module('colfatimaApp')
         return create(obj.toJSON());
       }
       function create(data){
-        return $http.post(url + '/' + modelname + '/create', data)
+        return $http.post(urlBase + modelname + '/create', data)
           .then(getResolve, getReject)
           ;
       }
@@ -106,7 +118,7 @@ angular.module('colfatimaApp')
         return update(obj.id, obj.toJSON());
       }
       function update(modelid, data){
-        return $http.put(url + '/' + modelname + '/update/' + modelid, data)
+        return $http.put(urlBase + modelname + '/update/' + modelid, data)
           .then(getResolve, getReject)
           ;
       }
@@ -116,14 +128,14 @@ angular.module('colfatimaApp')
       }
       function destroy(modelid){
         modelid = modelid || obj.id;
-        return $http.delete(url + '/' + modelname + '/' + modelid)
+        return $http.delete(urlBase + modelname + '/' + modelid)
           .then(getResolve, getReject)
           ;
       }
 
       function findOne(modelid){
         modelid = modelid || obj.id;
-        return $http.get(url + '/' + modelname + '/' + modelid)
+        return $http.get(urlBase + modelname + '/' + modelid)
           .then(getResolve, getReject)
           ;
       }
@@ -133,7 +145,7 @@ angular.module('colfatimaApp')
       }
       function find(where){
         where = where || {};
-        return $http.get(url + '/' + modelname, where)
+        return $http.get(urlBase + modelname, where)
           .then(getResolve, getReject)
           ;
       }
@@ -143,7 +155,7 @@ angular.module('colfatimaApp')
       }
       function populate(modelid, associationname){
         modelid = modelid || obj.id;
-        return $http.get(url + '/' + modelname + '/' + modelid + '/' + associationname)
+        return $http.get(urlBase + modelname + '/' + modelid + '/' + associationname)
           .then(getResolve, getReject)
           ;
       }
@@ -153,7 +165,7 @@ angular.module('colfatimaApp')
       }
       function add(modelid, associationname, associationid){
         modelid = modelid || obj.id;
-        return $http.post(url + '/' + modelname + '/' + modelid + '/' + associationname + '/' + associationid)
+        return $http.post(urlBase + modelname + '/' + modelid + '/' + associationname + '/' + associationid)
           .then(getResolve, getReject)
           ;
       }
@@ -163,7 +175,7 @@ angular.module('colfatimaApp')
       }
       function remove(modelid, associationname, associationid){
         modelid = modelid || obj.id;
-        return $http.delete(url + '/' + modelname + '/' + modelid + '/' + associationname + '/' + associationid)
+        return $http.delete(urlBase + modelname + '/' + modelid + '/' + associationname + '/' + associationid)
           .then(getResolve, getReject)
           ;
       }

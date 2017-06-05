@@ -2,3 +2,10 @@
 // endbower
 
 //@import '../bower_components/angular-material/angular-material.scss';
+
+.chart-container{
+  /*height: 400px;
+  width: 800px;*/
+  overflow: auto;
+  margin: 0 auto;
+}
