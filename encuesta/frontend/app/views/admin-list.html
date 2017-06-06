@@ -44,10 +44,40 @@
     <md-button ng-click="adminlist.toggleShowList()">
       {{ adminlist.showlist?'ocultar':'mostrar'}} tabla
     </md-button>
+    <md-menu>
+      <md-button
+          aria-label="Open menu"
+          class="md-icon-button"
+          ng-click="adminlist.openMenu($mdMenu, $event)"
+      >
+        <md-icon
+            md-menu-origin
+            md-svg-icon="menu"
+        ></md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item
+            ng-repeat="resource in adminlist.resources.list"
+        >
+          <md-button
+              ui-sref="admin.list({model: '{{ ::resource.route }}'})"
+          >
+            <md-icon
+                md-svg-icon="{{ ::resource.icon }}"
+                md-menu-align-target
+            ></md-icon>
+            {{ ::resource.title }}
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
   </div>
 </md-toolbar>
-<md-content>
-  <md-table-container flex ng-show="adminlist.showlist">
+<md-content layout="column">
+  <md-table-container
+      flex
+      ng-show="adminlist.showlist"
+  >
     <table
       md-table
       md-row-select

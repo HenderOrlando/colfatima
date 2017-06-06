@@ -19,6 +19,7 @@ angular.module('colfatimaApp')
     ;
     $rootScope.encuestaIniciada = false;
 
+    vm.year = new Date().getFullYear();
     vm.area = null;
     vm.cursos = [];
     vm.docente = null;

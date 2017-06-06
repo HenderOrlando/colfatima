@@ -8,7 +8,7 @@
  * Controller of the colfatimaApp
  */
 angular.module('colfatimaApp')
-  .controller('EncuestaCtrl', function (Model, $stateParams, $rootScope, $mdToast) {
+  .controller('EncuestaCtrl', function (Model, $stateParams, $rootScope, $mdToast, $timeout) {
     var
       vm = this,
       Encuesta = Model.getNew('encuesta'),
@@ -67,19 +67,19 @@ angular.module('colfatimaApp')
     loadRecurso();
 
     function populatePregunta(i){
-      Pregunta.findOne(vm.preguntas[i].id).then(function(pregunta){
+      return Pregunta.findOne(vm.preguntas[i].id).then(function(pregunta){
         vm.preguntas[i] = pregunta;
       });
     }
 
     function loadEstudiante(){
-      Estudiante.findOne(vm.estudiante.id).then(function(est){
+      return Estudiante.findOne(vm.estudiante.id).then(function(est){
         vm.estudiante = est;
       });
     }
 
     function loadRecurso(){
-      Recurso.find().then(function(recursos){
+      return Recurso.find().then(function(recursos){
         vm.recursos = recursos;
       });
     }
@@ -104,34 +104,43 @@ angular.module('colfatimaApp')
     }
 
     function saveRespuesta(pregunta, respuesta){
-      var rta = null;
+      vm.disabled = true;
+      var
+        rta = null,
+        promise = null
+      ;
       if(pregunta.hasRecursos){
         rta = rtaSelected(pregunta, respuesta);
         if(!rta){
-          respuestaestudiante.create({
-            recurso: respuesta.id,
-            pregunta: pregunta.id,
-            encuesta: vm.encuesta.id,
-            estudiante: vm.estudiante.id,
-            docente: vm.docente.id,
-            area: vm.area.id
-          }).then(function(rta){
-            showToast('Respuesta guardada');
-            loadEstudiante();
-          });
+          promise = respuestaestudiante
+            .create({
+              recurso: respuesta.id,
+              pregunta: pregunta.id,
+              encuesta: vm.encuesta.id,
+              estudiante: vm.estudiante.id,
+              docente: vm.docente.id,
+              area: vm.area.id
+            })
+            .then(function(rta) {
+              return 'Respuesta guardada';
+            })
+          ;
         }else{
-          respuestaestudiante.findOne(rta.id).then(function(rta){
-            rta.$destroy().then(function(){
-              showToast('Respuesta actualizada');
-              loadEstudiante();
+          promise = respuestaestudiante
+            .findOne(rta.id)
+            .then(function(rta) {
+              return rta
+                .$destroy()
+                .then(function () {
+                  return 'Respuesta actualizada';
+                });
             });
-          });
         }
       }else{
         rta = hasPresented(pregunta, respuesta);
-        console.log(rta)
+        //console.log(rta)
         if(!rta){
-          respuestaestudiante.create({
+          promise = respuestaestudiante.create({
             respuesta: respuesta.id,
             pregunta: pregunta.id,
             encuesta: vm.encuesta.id,
@@ -139,20 +148,37 @@ angular.module('colfatimaApp')
             docente: vm.docente.id,
             area: vm.area.id
           }).then(function(rta){
-            showToast('Respuesta guardada');
-            loadEstudiante();
+            return 'Respuesta guardada';
           });
         }else{
           rta.respuesta = respuesta.id;
-          respuestaestudiante.findOne(rta.id)
+          promise = respuestaestudiante
+            .findOne(rta.id)
             .then(function(rta){
               rta.respuesta = respuesta.id;
-              rta.$update().then(function(rta){
-                showToast('Respuesta actualizada');
+              return rta
+                .$update()
+                .then(function(rta) {
+                  return 'Respuesta actualizada';
+                });
               });
-          });
         }
       }
+  
+      promise
+        .then(function(msg){
+          return loadEstudiante()
+            .then(function() {
+              showToast(msg);
+              vm.disabled = false;
+            })
+          ;
+        }, function(err){
+          console.error(err)
+          vm.disabled = false;
+          showToast('No se guardó tu respuesta, intenta en unos segundos.');
+        })
+      ;
       /*console.log(respuesta)
       console.log(pregunta)
       console.log(vm.encuesta)
@@ -193,13 +219,29 @@ angular.module('colfatimaApp')
       })[0];
     }
 
+    var msgTmp = '', time = null;
     function showToast(msg){
-      $mdToast.show(
-        $mdToast.simple()
-          .textContent(msg)
-          .position('top right')
-          .hideDelay(3000)
-      );
+      if(msg !== msgTmp){
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent(msg)
+            .position('top right')
+            .hideDelay(3000)
+        );
+        resetTime();
+      }else{
+        resetTime();
+      }
+      msgTmp = msg;
+      
+      function resetTime(){
+        if(time){
+          $timeout.cancel(time);
+        }
+        time = $timeout(function(){
+          msgTmp = '';
+        }, 1500)
+      }
     }
 
     function filterRecurso(item, index, list){

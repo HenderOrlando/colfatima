@@ -24,6 +24,16 @@ angular.module('colfatimaApp')
     vm.toggleShowList = toggleShowList;
     vm.getSelectedIds = getSelectedIds;
     vm.destroy = destroy;
+    
+    vm.resources = {
+      list: [
+        {
+          title: '',
+          route: '',
+          icon: ''
+        }
+      ]
+    };
 
     function toggleShowList(){
       vm.showlist = !vm.showlist;
