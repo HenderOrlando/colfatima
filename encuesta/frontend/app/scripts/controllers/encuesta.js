@@ -236,7 +236,7 @@ angular.module('colfatimaApp')
       
       function resetTime(){
         if(time){
-          $timeout.cancel(time);
+          $timeout.cancel();
         }
         time = $timeout(function(){
           msgTmp = '';
