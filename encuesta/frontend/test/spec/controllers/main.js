@@ -1,5 +1,6 @@
 'use strict';
 
+// TODO[hender] Completar la prueba unitaria
 describe('Controller: MainCtrl', function () {
 
   // load the controller's module
@@ -16,7 +17,6 @@ describe('Controller: MainCtrl', function () {
       // place here mocked dependencies
     });
   }));
-
   it('should attach a list of awesomeThings to the scope', function () {
     expect(MainCtrl.awesomeThings.length).toBe(3);
   });

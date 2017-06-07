@@ -45,7 +45,7 @@
     <md-input-container>
       <label>Área</label>
       <md-select ng-model="main.area">
-        <md-option ng-repeat="area in main.areas" value="{{ area.id }}">
+        <md-option ng-repeat="area in main.areas | orderBy: 'nombre'" value="{{ area.id }}">
           {{ area.nombre }}
         </md-option>
       </md-select>
@@ -53,7 +53,7 @@
     <md-input-container>
       <label>Docente</label>
       <md-select ng-model="main.docente">
-        <md-option ng-repeat="docente in main.docentes" value="{{ docente.id }}">
+        <md-option ng-repeat="docente in main.docentes | orderBy: 'nombre'" value="{{ docente.id }}">
           {{ docente.nombre }}
         </md-option>
       </md-select>
